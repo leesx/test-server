@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+ <head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+ </head>
+ <body> 
+  <p>下载该图片：</p>
+  <p> </p>
+  <h2>非跨域下的图片资源</h2> 
+  <div> 
+   <a href="./hello.jpg" download="test.jpg"> <img border="0" src="http://www.w3school.com.cn/i/w3school_logo_white.gif" alt="W3School" /> </a> 
+  </div> 
+  <h2>跨域下的图片资源</h2> 
+  <div> 
+   <a href="http://www.w3school.com.cn/i/eg_tulip.jpg" download="test123.jpg"> <img border="0" src="http://www.w3school.com.cn/i/eg_tulip.jpg" alt="W3School" /> </a> 
+  </div> 
+  <a id="downLoad" onclick="oDownLoad('downLoad')">下载</a>
+    <input type="hidden" name="fgycompany.fileUrl" value="./hello.jpg" />
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+	<script>
+        function oDownLoad(obj) {
+            alert("dd");
+            var odownLoad = document.getElementById(obj);
+            var url = $(odownLoad).siblings("input[name='fgycompany.fileUrl']").val();
+            //取得浏览器的userAgent字符串
+            var userAgent = navigator.userAgent;
+            //浏览器类型
+            var chromeType = "";
+            var isOpera = userAgent.indexOf("Opera") > -1;
+            //判断是否Opera浏览器
+            if (isOpera) {
+                chromeType = "Opera"
+            };
+            //判断是否Firefox浏览器
+            if (userAgent.indexOf("Firefox") > -1) {
+                chromeType = "FF";
+            }
+            if (userAgent.indexOf("Chrome") > -1) {
+                chromeType = "Chrome";
+            }
+            //判断是否Safari浏览器
+            if (userAgent.indexOf("Safari") > -1) {
+                chromeType = "Safari";
+            }
+            //判断是否IE浏览器
+            if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+                chromeType = "IE";
+            };
+            //判断是否Edge浏览器
+            if (userAgent.indexOf("Trident") > -1) {
+                chromeType = "Edge";
+            }
+            if (chromeType === "IE" || chromeType === "Edge") {
+                //IE、Edge
+                odownLoad.href = "#";
+                var oImg = document.createElement("img");
+                oImg.src = url;
+                oImg.id = "downImg";
+                var odown = document.getElementById("down");
+                odown.appendChild(oImg);
+                var oPop = window.open(document.getElementById('downImg').src, "", "width=1, height=1, top=5000, left=5000");
+                for (; oPop.document.readyState != "complete";) {
+                    if (oPop.document.readyState == "complete") break;
+                }
+                oPop.document.execCommand("SaveAs");
+                oPop.close();
+            } else {
+                //!IE、Edge
+                odownLoad.href = url;
+                odownLoad.download = "";
+            }
+        }
+    </script>
+ </body>
+</html>
